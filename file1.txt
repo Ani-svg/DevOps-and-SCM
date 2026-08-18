@@ -1,3 +1,4 @@
 My first Git Lab
 Learning Git commands
-Learning Github
+Learning GitHub
+Pull and push commands

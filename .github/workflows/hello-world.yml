@@ -1,0 +1,42 @@
+name: Hello World CI-CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Hello World application
+        run: python app.py
+
+      - name: Run automated tests
+        run: python -m unittest -v
+
+      - name: Package application
+        run: |
+          mkdir dist
+          cp app.py test_app.py dist/
+          cd dist
+          zip ../hello-world.zip app.py test_app.py
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello-world-package
+          path: hello-world.zip
